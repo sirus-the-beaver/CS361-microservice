@@ -35,4 +35,9 @@ exports.login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
     }
+};
+
+exports.logout = async (req, res) => {
+    // The user is already authenticated, so we don't need to do anything here
+    res.status(200).json({ message: "User logged out successfully" });
 }
