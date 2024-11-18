@@ -112,3 +112,6 @@ def signup():
     "message": "User logged out successfully"
 }
 ```
+
+## UML Diagram
+![UML Diagram](./User%20and%20system%20Sequence%20diagram.svg)
