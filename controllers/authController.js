@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
@@ -15,3 +17,22 @@ exports.register = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ error: "Invalid credentials" });
+
+        // Check if the password is correct
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) return res.status(400).json({ error: "Invalid credentials" });
+
+        // Create a token and send it to the client
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
