@@ -6,10 +6,15 @@ exports.register = async (req, res) => {
     const { username, email, password } = req.body;
     try {
         // Check if the email is already in use
-        const existingUser = await User.findOne({ email });
-        if (existingUser) return res.status(400).json({ error: "Email already in use" });
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) return res.status(400).json({ error: "Email already in use" });
+
+        // Check if the username is already in use
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) return res.status(400).json({ error: "Username already in use" });
 
         const user = new User({ username, email, password });
+        
         // Save the user to the database
         await user.save();
         res.status(201).json({ message: "User registered successfully" });

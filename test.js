@@ -45,7 +45,7 @@ const runTests = async () => {
     await registerUser('testuser', 'test@email.com', 'password');
 
     console.log('\nTesting user login...');
-    const token = await loginUser('testuser', 'password');
+    const token = await loginUser('test@email.com', 'password');
 
     console.log('\nTesting user logout...');
     await logoutUser(token);
